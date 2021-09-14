@@ -74,15 +74,11 @@ module.exports = {
             const e1s = "<:minecraftrole:887440139855478785>"
             console.log(guild.emojis.cache);
 
-            const embed = new MessageEmbed().addField("Role options",
-                'Profile: ' + userMention(interaction.user.id) + '\n__Role options__\n' +
-                ' **`Minecraft`**||Join the Minecraft server||\n' +
-                ' **`Plugin support`**||Access plugin support||\n' +
-                ' `Art`||Artists, photographers, all art enthusiasts - coming soon||',
-                false);
 
-            await interaction.reply({content:'Emoji '+e1,
-                embeds: [embed],
+            await interaction.reply({content:'Profile: ' + userMention(interaction.user.id) + '\n__Role options__\n' +
+                    '<:minecraftrole:887035468930232331> **`Minecraft`**||Join the Minecraft server||\n' +
+                    '<:developerrole:887035750649061416>  **`Plugin support`**||Access plugin support||\n' +
+                    ':paintbrush: `Art`||Artists, photographers, all art enthusiasts - coming soon||',
                 components: [row],
                 ephemeral: true
             });
