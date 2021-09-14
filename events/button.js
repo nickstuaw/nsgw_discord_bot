@@ -61,13 +61,13 @@ module.exports = {
                         .setCustomId(item[0] + "_leave")
                         .setLabel("Leave " + item[1] + ".")
                         .setStyle("DANGER")
-                        .setEmoji(guild.emojis.cache.get(type[3]));
+                        .setEmoji(guild.emojis.cache.get(item[3]));
                 } else {
                     btn = new MessageButton()
                         .setCustomId(item[0] + '_join')
                         .setLabel("Join " + item[1] + ".")
                         .setStyle('SUCCESS')
-                        .setEmoji(guild.emojis.cache.get(type[3]));
+                        .setEmoji(guild.emojis.cache.get(item[3]));
                 }
                 row.addComponents(btn)
                 console.log("end of loop")
