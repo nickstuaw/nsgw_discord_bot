@@ -3,7 +3,7 @@ const {MessageActionRow, MessageButton, MessageEmbed} = require("discord.js");
 const { guildId } = require('../config.json');
 // plugin user role id is 887034141898600468
 
-const types = [['mcs','the Minecraft server','887033315356454954','<:minecraftrole:887035468930232331>'],['pls','Plugins Support','887034141898600468','<:developerrole:887035750649061416>']];
+const types = [['mcs','the Minecraft server','887033315356454954'],['pls','Plugins Support','887034141898600468']];
 
 async function process(interaction, id) {// id = component.customId
     const key = id.split("_")[0];
@@ -22,7 +22,7 @@ async function process(interaction, id) {// id = component.customId
         }
         btn = new MessageButton()
             .setCustomId(key + "_leave")
-            .setLabel(type[3]+"Leave " + type[1] + ".")
+            .setLabel("Leave " + type[1] + ".")
             .setStyle("DANGER")
     } else if (action === "leave") {
         if(interaction.member.roles.cache.has(type[2])) {
@@ -30,8 +30,9 @@ async function process(interaction, id) {// id = component.customId
         }
         btn = new MessageButton()
             .setCustomId(key + '_join')
-            .setLabel(type[3]+"Join " + type[1] + ".")
-            .setStyle('SUCCESS');
+            .setLabel("Join " + type[1] + ".")
+            .setStyle('SUCCESS')
+            .setEmoji(guild);
     }
     let final = new MessageActionRow();
     console.log()
