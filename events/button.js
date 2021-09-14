@@ -1,98 +1,80 @@
 const {SlashCommandBuilder, userMention} = require("@discordjs/builders");
-const {MessageActionRow, MessageButton, RoleManager} = require("discord.js");
+const {MessageActionRow, MessageButton, MessageInteraction, RoleManager, MessageComponentInteraction, Collection} = require("discord.js");
 const {data} = require("../commands/roles");
 // plugin user role id is 887034141898600468
 
-async function getRow(interaction) {
-    let mc_btn, pls_btn;
-    mc_btn = new MessageButton()
-        .setCustomId('mc_joined')
-        .setLabel('Click to leave the Minecraft server.')
-        .setStyle('DANGER');
-    if(!interaction.member.roles.cache.has('887033315356454954')) {
-        await interaction.member.roles.add('887033315356454954');
+const types = [['mcs','the Minecraft server','887033315356454954'],['pls','Plugins Support','887034141898600468']];
+
+async function process(interaction, id) {// id = component.customId
+    const key = id.split("_")[0];
+    let type, index;
+    for(index in types) {
+        if(types[index][0] === key) {
+            type = types[index];
+            break;
+        }
     }
-    return new MessageActionRow()
-        .addComponents(
-            mc_btn,
-            pls_btn
-        );
+    const action = id.split("_")[1];
+    let btn;
+    if (action === "join") {
+        if (!interaction.member.roles.cache.has(type[2])) {
+            await interaction.member.roles.add(type[2]);
+        }
+        btn = new MessageButton()
+            .setCustomId(key + "_leave")
+            .setLabel("Leave " + type[1] + ".")
+            .setStyle("DANGER")
+    } else if (action === "leave") {
+        if(interaction.member.roles.cache.has(type[2])) {
+            await interaction.member.roles.remove(type[2]);
+        }
+        btn = new MessageButton()
+            .setCustomId(key + '_join')
+            .setLabel("Join " + type[1] + ".")
+            .setStyle('SUCCESS');
+    }
+    let final = new MessageActionRow();
+    console.log()
+    let row = interaction.message.components[0].spliceComponents(index, 1, btn).components;
+    for(let i in row) {
+        final.addComponents(row[i])
+    }
+    return final
 }
 
 module.exports = {
     name: 'interactionCreate',
-    async execute(interaction) {
+    async execute(client, interaction) {
         if (!interaction.isButton()) return;
-        let mc_btn, pls_btn, row;
-        switch (interaction.component.customId) {
-            case 'open_options':
-                mc_btn = new MessageButton()
-                    .setCustomId('join_mc')
-                    .setLabel('Join Minecraft')
-                    .setStyle('SUCCESS');
-                pls_btn = new MessageButton()
-                    .setCustomId('join_plugins')
-                    .setLabel('Join Plugins Support')
-                    .setStyle('SUCCESS');
-                if(interaction.member.roles.cache.has('887033315356454954')) {
-                    mc_btn = new MessageButton()
-                        .setCustomId('mc_joined')
-                        .setLabel('Leave Minecraft.')
-                        .setStyle('DANGER');
+        if (interaction.component.customId === 'open_options') {
+            let btn, item;
+            console.log("types = " + types)
+            const row = new MessageActionRow();
+            for(let i in types) {
+                item = types[i]
+                console.log("start of loop, item = "+item)
+                console.log("role check")
+                if (interaction.member.roles.cache.has(item[2])) {
+                    btn = new MessageButton()
+                        .setCustomId(item[0] + "_leave")
+                        .setLabel("Leave " + item[1] + ".")
+                        .setStyle("DANGER")
+                } else {
+                    btn = new MessageButton()
+                        .setCustomId(item[0] + '_join')
+                        .setLabel("Join " + item[1] + ".")
+                        .setStyle('SUCCESS')
                 }
-                if(interaction.member.roles.cache.has('887034141898600468')) {
-                    pls_btn = new MessageButton()
-                        .setCustomId('plugins_joined')
-                        .setLabel('Leave Plugins Support.')
-                        .setStyle('DANGER');
-                }
-                row = new MessageActionRow()
-                    .addComponents(
-                        mc_btn,
-                        pls_btn
-                    );
-                await interaction.reply({content: 'Profile: '+userMention(interaction.user.id)+'\n__Role options__', components: [row], ephemeral: true});
-                break;
-            case 'join_mc':
-                mc_btn = new MessageButton()
-                    .setCustomId('mc_joined')
-                    .setLabel('Click to leave the Minecraft server.')
-                    .setStyle('DANGER');
-                if(!interaction.member.roles.cache.has('887033315356454954')) {
-                    await interaction.member.roles.add('887033315356454954');
-                }
-                await interaction.update({components: [interaction.message.components[0].spliceComponents(0,1,mc_btn)], ephemeral: true});
-                break;
-            case 'mc_joined':
-                mc_btn = new MessageButton()
-                    .setCustomId('join_mc')
-                    .setLabel('Click to join the Minecraft server.')
-                    .setStyle('SUCCESS');
-                if(interaction.member.roles.cache.has('887033315356454954')) {
-                    await interaction.member.roles.remove('887033315356454954');
-                }
-                await interaction.update({components: [interaction.message.components[0].spliceComponents(0,1,mc_btn)], ephemeral: true});
-                break;
-            case 'join_plugins':
-                pls_btn = new MessageButton()
-                    .setCustomId('plugins_joined')
-                    .setLabel('Click to leave Plugins Support.')
-                    .setStyle('DANGER');
-                if(!interaction.member.roles.cache.has('887034141898600468')) {
-                    await interaction.member.roles.add('887034141898600468');
-                }
-                await interaction.update({components: [interaction.message.components[0].spliceComponents(1,1,pls_btn)], ephemeral: true});
-                break;
-            case 'plugins_joined':
-                pls_btn = new MessageButton()
-                    .setCustomId('join_plugins')
-                    .setLabel('Click to join Plugins Support.')
-                    .setStyle('SUCCESS');
-                if(interaction.member.roles.cache.has('887034141898600468')) {
-                    await interaction.member.roles.remove('887034141898600468');
-                }
-                await interaction.update({components: [interaction.message.components[0].spliceComponents(1,1,pls_btn)], ephemeral: true});
-                break;
+                row.addComponents(btn)
+                console.log("end of loop")
+            }
+            await interaction.reply({
+                content: ('Profile: ' + userMention(interaction.user.id) + '\n__Role options__'),
+                components: [row],
+                ephemeral: true
+            });
+        } else {
+            await interaction.update({components: [await process(interaction, interaction.component.customId)]})
         }
     }
 }
