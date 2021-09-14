@@ -31,8 +31,7 @@ async function process(interaction, id) {// id = component.customId
         btn = new MessageButton()
             .setCustomId(key + '_join')
             .setLabel("Join " + type[1] + ".")
-            .setStyle('SUCCESS')
-            .setEmoji(guild);
+            .setStyle('SUCCESS');
     }
     let final = new MessageActionRow();
     console.log()
