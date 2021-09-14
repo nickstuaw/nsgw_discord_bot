@@ -19,7 +19,7 @@ async function process(interaction, id, guild) {// id = component.customId
     if (action === "join") {
         if (!interaction.member.roles.cache.has(type[2])) {
             await interaction.member.roles.add(type[2]);
-            guild.channels.get('887312277554999376').send(userMention(interaction.user.id)+' added role: '+type[1]);
+            guild.channels.cache.get('887312277554999376').send(userMention(interaction.member.user.id)+' added role: '+type[1]);
         }
         btn = new MessageButton()
             .setCustomId(key + "_leave")
@@ -29,7 +29,7 @@ async function process(interaction, id, guild) {// id = component.customId
     } else if (action === "leave") {
         if(interaction.member.roles.cache.has(type[2])) {
             await interaction.member.roles.remove(type[2]);
-            guild.channels.get('887312277554999376').send(userMention(interaction.user.id)+' removed role: '+type[1]);
+            guild.channels.cache.get('887312277554999376').send(userMention(interaction.member.user.id)+' removed role: '+type[1]);
         }
         btn = new MessageButton()
             .setCustomId(key + '_join')
