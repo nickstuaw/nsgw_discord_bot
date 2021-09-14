@@ -1,22 +1,11 @@
 // Require the necessary discord.js classes
 const fs = require('fs');
-const { Client, guildId, Collection, Intents, TextChannel} = require('discord.js');
+const { Client, Collection, Intents} = require('discord.js');
 
-const { token } = require('./config.json');
+const { token, guildId } = require('./config.json');
 
 // Create a new client instance
-const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES,Intents.FLAGS.DIRECT_MESSAGES], partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
-
-const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
-
-for (const file of eventFiles) {
-    const event = require(`./events/${file}`);
-    if (event.once) {
-        client.once(event.name, (...args) => event.execute(client, ...args));
-    } else {
-        client.on(event.name, (...args) => event.execute(client, ...args));
-    }
-}
+const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES,Intents.FLAGS.DIRECT_MESSAGES,Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS], partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 
 client.commands = new Collection();
 
@@ -32,3 +21,20 @@ for (const file of commandFiles) {
 
 // Login to Discord with your client's token
 client.login(token);
+
+const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
+client.on('ready', i=>{
+    let guild = client.guilds.cache.get(guildId);
+    client.user.setActivity('my code',{type:'WATCHING'});
+    console.log(`Ready! Logged in as ${client.user.tag}`);
+
+    for (const file of eventFiles) {
+        const event = require(`./events/${file}`);
+        if (event.once) {
+            client.once(event.name, (...args) => event.execute(guild,client, ...args));
+        } else {
+            client.on(event.name, (...args) => event.execute(guild,client, ...args));
+        }
+    }
+})
+

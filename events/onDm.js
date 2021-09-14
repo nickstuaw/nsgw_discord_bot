@@ -3,7 +3,7 @@ const { Client, guildId, Collection, Intents, Guild, GuildChannel, TextChannel} 
 const {ChannelType} = require("discord-api-types/v8");
 module.exports = {
     name: 'messageCreate',
-    async execute(client, message) {
+    async execute(guild,client, message) {
         console.log('is called');
         if (message.author.bot) return;
         console.log('is not bot');

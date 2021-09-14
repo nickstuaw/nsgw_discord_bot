@@ -8,12 +8,21 @@ module.exports = {
         if(interaction.user.id!=='552617316219879434') return;
         let button = new MessageButton()
             .setCustomId('open_options')
-            .setLabel('Open role options')
+            .setLabel('Access the Discord Server')
             .setStyle('PRIMARY');
         const row = new MessageActionRow()
             .addComponents(
                 button,
             );
-        await interaction.channel.send({ content: 'Access topics:', components: [row] })
+        await interaction.channel.send({ content: '' +
+                '**\\***\n' +
+                'Welcome to **Neb\'s Caverns**!\n' +
+                '**\\***\n' +
+                '\n' +
+                'This discord server has separate areas with their own purposes.\n' +
+                'Get started by clicking the "Open role options" button below!\n' +
+                'If you can\'t see it, you\'ll have to update discord.\n' +
+                '\n' +
+                '`Access topics:`', components: [row] })
     },
 };

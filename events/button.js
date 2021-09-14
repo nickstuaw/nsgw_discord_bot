@@ -1,6 +1,6 @@
-const {SlashCommandBuilder, userMention} = require("@discordjs/builders");
-const {MessageActionRow, MessageButton, MessageInteraction, RoleManager, MessageComponentInteraction, Collection} = require("discord.js");
-const {data} = require("../commands/roles");
+const {userMention, Embed} = require("@discordjs/builders");
+const {MessageActionRow, MessageButton, MessageEmbed} = require("discord.js");
+const { guildId } = require('../config.json');
 // plugin user role id is 887034141898600468
 
 const types = [['mcs','the Minecraft server','887033315356454954'],['pls','Plugins Support','887034141898600468']];
@@ -44,7 +44,7 @@ async function process(interaction, id) {// id = component.customId
 
 module.exports = {
     name: 'interactionCreate',
-    async execute(client, interaction) {
+    async execute(guild,client, interaction) {
         if (!interaction.isButton()) return;
         if (interaction.component.customId === 'open_options') {
             let btn, item;
@@ -68,8 +68,21 @@ module.exports = {
                 row.addComponents(btn)
                 console.log("end of loop")
             }
-            await interaction.reply({
-                content: ('Profile: ' + userMention(interaction.user.id) + '\n__Role options__'),
+
+            const e1 = guild.emojis.cache.get("887440139855478785"),
+            e2 = guild.emojis.cache.get("887440139855478785");
+            const e1s = "<:minecraftrole:887440139855478785>"
+            console.log(guild.emojis.cache);
+
+            const embed = new MessageEmbed().addField("Role options",
+                'Profile: ' + userMention(interaction.user.id) + '\n__Role options__\n' +
+                ' **`Minecraft`**||Join the Minecraft server||\n' +
+                ' **`Plugin support`**||Access plugin support||\n' +
+                ' `Art`||Artists, photographers, all art enthusiasts - coming soon||',
+                false);
+
+            await interaction.reply({content:'Emoji '+e1,
+                embeds: [embed],
                 components: [row],
                 ephemeral: true
             });
