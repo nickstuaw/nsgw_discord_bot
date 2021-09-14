@@ -1,6 +1,6 @@
-const {SlashCommandBuilder} = require("@discordjs/builders");
+const {SlashCommandBuilder, userMention} = require("@discordjs/builders");
 const {MessageActionRow, MessageButton, RoleManager} = require("discord.js");
-const {data} = require("../commands/ping");
+const {data} = require("../commands/roles");
 // plugin user role id is 887034141898600468
 
 async function getRow(interaction) {
@@ -51,7 +51,7 @@ module.exports = {
                         mc_btn,
                         pls_btn
                     );
-                await interaction.reply({content: '__Role options__', components: [row], ephemeral: true});
+                await interaction.reply({content: 'Profile: '+userMention(interaction.user.id)+'\n__Role options__', components: [row], ephemeral: true});
                 break;
             case 'join_mc':
                 mc_btn = new MessageButton()

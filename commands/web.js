@@ -6,7 +6,6 @@ module.exports = {
         .setDescription('View links.'),
     async execute(interaction) {
         let button = new MessageButton()
-            .setCustomId('website')
             .setLabel('Main Site')
             .setStyle('LINK')
             .setURL('https://dev.nsgw.xyz/');

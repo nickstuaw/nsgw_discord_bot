@@ -1,4 +1,4 @@
-const {SlashCommandBuilder} = require("@discordjs/builders");
+const {SlashCommandBuilder, userMention} = require("@discordjs/builders");
 const {MessageActionRow, MessageButton} = require("discord.js");
 module.exports = {
     data: new SlashCommandBuilder()
@@ -13,8 +13,7 @@ module.exports = {
             .addComponents(
                 button,
             );
-        //await interaction.channel.send({content: 'Check out our roles:', components: [row]});
         await interaction.reply({ content: 'See below:', components: [row], ephemeral: true })
-        await interaction.channel.send({ content: 'Role selection', components: [row]});
+        //await interaction.channel.send({ content: 'Role selection', components: [row]});
     },
 };
