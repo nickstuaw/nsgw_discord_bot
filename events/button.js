@@ -38,7 +38,6 @@ async function process(interaction, id, guild) {// id = component.customId
             .setEmoji(guild.emojis.cache.get(type[3]));
     }
     let final = new MessageActionRow();
-    console.log()
     let row = interaction.message.components[0].spliceComponents(index, 1, btn).components;
     for(let i in row) {
         final.addComponents(row[i])
@@ -52,12 +51,9 @@ module.exports = {
         if (!interaction.isButton()) return;
         if (interaction.component.customId === 'open_options') {
             let btn, item;
-            console.log("types = " + types)
             const row = new MessageActionRow();
             for(let i in types) {
                 item = types[i]
-                console.log("start of loop, item = "+item)
-                console.log("role check")
                 if (interaction.member.roles.cache.has(item[2])) {
                     btn = new MessageButton()
                         .setCustomId(item[0] + "_leave")
@@ -72,13 +68,9 @@ module.exports = {
                         .setEmoji(guild.emojis.cache.get(item[3]));
                 }
                 row.addComponents(btn)
-                console.log("end of loop")
             }
 
-            const e1 = guild.emojis.cache.get("887440139855478785"),
-            e2 = guild.emojis.cache.get("887440139855478785");
             const e1s = "<:minecraftrole:887440139855478785>"
-            console.log(guild.emojis.cache);
 
 
             await interaction.reply({content:'Profile: ' + userMention(interaction.user.id) + '\n__Role options__\n' +
