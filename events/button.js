@@ -3,7 +3,7 @@ const {MessageActionRow, MessageButton, MessageEmbed} = require("discord.js");
 const { guildId } = require('../config.json');
 // plugin user role id is 887034141898600468
 
-const types = [['yt','YouTube','895710485402513408','895711354747518986',true],['tw','Twitch','895710593951076393','895711354747518986',true]];
+const types = [['yt','YouTube','825380934773637170','825384737735573544',true],['tw','Twitch','825380875947606046','825384737735573544',true]];
 
 async function process(interaction, id, guild) {// id = component.customId
     const key = id.split("_")[0];
@@ -19,7 +19,7 @@ async function process(interaction, id, guild) {// id = component.customId
     if (action === "join") {
         if (!interaction.member.roles.cache.has(type[2])) {
             await interaction.member.roles.add(type[2]);
-            guild.channels.cache.get('895716329150095380').send(userMention(interaction.member.user.id)+' :flag_ch: '+type[1]);
+            guild.channels.cache.get('895718957321945149').send(userMention(interaction.member.user.id)+' :flag_ch: '+type[1]);
         }
         btn = new MessageButton()
             .setCustomId(key + "_leave")
@@ -29,7 +29,7 @@ async function process(interaction, id, guild) {// id = component.customId
     } else if (action === "leave") {
         if(interaction.member.roles.cache.has(type[2])) {
             await interaction.member.roles.remove(type[2]);
-            guild.channels.cache.get('895716329150095380').send(userMention(interaction.member.user.id)+' :no_entry: '+type[1]);
+            guild.channels.cache.get('895718957321945149').send(userMention(interaction.member.user.id)+' :no_entry: '+type[1]);
         }
         btn = new MessageButton()
             .setCustomId(key + '_join')
@@ -69,9 +69,6 @@ module.exports = {
                 }
                 row.addComponents(btn)
             }
-
-            const e1s = "<:minecraftrole:887440139855478785>"
-
 
             await interaction.reply({content:'Profile: ' + userMention(interaction.user.id) + '\n__Role options__\n',
                 components: [row],

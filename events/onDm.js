@@ -5,7 +5,7 @@ module.exports = {
     name: 'messageCreate',
     async execute(guild,client, message) {
         if (message.author.bot) return;
-        const channel = client.channels.cache.get('887310949315383337')
+        const channel = client.channels.cache.get('895719432641450044')
         if (!channel.isText()) return;
         if (message.channel.type === 'DM') {
             console.log('is dm channel');
