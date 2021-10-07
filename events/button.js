@@ -57,13 +57,13 @@ module.exports = {
                 if (interaction.member.roles.cache.has(item[2])) {
                     btn = new MessageButton()
                         .setCustomId(item[0] + "_leave")
-                        .setLabel("Leave " + item[1] + ".")
+                        .setLabel((type[4] ? "Stop receiving " : "Leave ") + item[1] + (type[4] ? " notifications." : "."))
                         .setStyle("DANGER")
                         .setEmoji(guild.emojis.cache.get(item[3]));
                 } else {
                     btn = new MessageButton()
                         .setCustomId(item[0] + '_join')
-                        .setLabel("Join " + item[1] + ".")
+                        .setLabel((type[4] ? "Receive " : "Join ") + item[1] + (type[4] ? " notifications." : "."))
                         .setStyle('SUCCESS')
                         .setEmoji(guild.emojis.cache.get(item[3]));
                 }
@@ -73,10 +73,7 @@ module.exports = {
             const e1s = "<:minecraftrole:887440139855478785>"
 
 
-            await interaction.reply({content:'Profile: ' + userMention(interaction.user.id) + '\n__Role options__\n' +
-                    '<:minecraftrole:887035468930232331> **`Minecraft`**||Join the Minecraft server||\n' +
-                    '<:developerrole:887035750649061416>  **`Plugin support`**||Access plugin support||\n' +
-                    ':paintbrush: `Art`||Artists, photographers, all art enthusiasts - coming soon||',
+            await interaction.reply({content:'Profile: ' + userMention(interaction.user.id) + '\n__Role options__\n',
                 components: [row],
                 ephemeral: true
             });
