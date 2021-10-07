@@ -57,13 +57,13 @@ module.exports = {
                 if (interaction.member.roles.cache.has(item[2])) {
                     btn = new MessageButton()
                         .setCustomId(item[0] + "_leave")
-                        .setLabel((type[4] ? "Stop receiving " : "Leave ") + item[1] + (type[4] ? " notifications." : "."))
+                        .setLabel((item[4] ? "Stop receiving " : "Leave ") + item[1] + (item[4] ? " notifications." : "."))
                         .setStyle("DANGER")
                         .setEmoji(guild.emojis.cache.get(item[3]));
                 } else {
                     btn = new MessageButton()
                         .setCustomId(item[0] + '_join')
-                        .setLabel((type[4] ? "Receive " : "Join ") + item[1] + (type[4] ? " notifications." : "."))
+                        .setLabel((item[4] ? "Receive " : "Join ") + item[1] + (item[4] ? " notifications." : "."))
                         .setStyle('SUCCESS')
                         .setEmoji(guild.emojis.cache.get(item[3]));
                 }
