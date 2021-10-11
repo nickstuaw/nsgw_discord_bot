@@ -1,4 +1,6 @@
 # My bot for my servers.
-See it in action [here](https://discord.gg/qsrNzYUR87) and [here](https://discord.gg/55HUP9paRy).
+
+[![Example 1](https://raw.githubusercontent.com/nsgwick/images/master/examples/nsgw_discord_bot/example1.png)]
+[![Example 2](https://raw.githubusercontent.com/nsgwick/images/master/examples/nsgw_discord_bot/example2.png)]
 
 [Developer's website](https://nsgw.xyz/)
